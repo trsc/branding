@@ -1,0 +1,16 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    colorize (0.6.0)
+    hashugar (0.0.6)
+    image_sorcery (1.1.0)
+    image_squeeze (0.1.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  colorize
+  hashugar
+  image_sorcery
+  image_squeeze

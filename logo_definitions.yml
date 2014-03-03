@@ -1,0 +1,24 @@
+defaults:
+  depth: 8 # color depth 8-Bit
+  colors: 32
+  template_folder: templates
+  output_folder: assets
+  open_when_done: true
+
+definitions:
+  -
+    template: TRS_Logo_RGB.svg
+    logo_name: trsc_logo_full
+
+    formats:
+      fb:
+        format: :png
+        size: 300x300
+  -
+    template: TRS_Logo_RGB_solo.svg
+    logo_name: trsc_logo
+
+    formats:
+      fb:
+        format: :png
+        size: "300x300"
