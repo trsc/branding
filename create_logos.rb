@@ -18,8 +18,9 @@ end
 
 # load config and init
 config = YAML.load_file(File.join(Dir.pwd, "logo_definitions.yml")).to_hashugar
+squeezer = ImageSqueeze.new(processors: [ ImageSqueeze::PNGCrushSilentProcessor ])
+
 full_output_path = File.join(Dir.pwd, config.defaults.output_folder)
-created_files = []
 
 # create output folder
 system "mkdir -p #{full_output_path}"
@@ -27,31 +28,51 @@ system "mkdir -p #{full_output_path}"
 # clean output folder
 system "rm -rf #{File.join(full_output_path, '*')}"
 
+
+headline = " +  toy rocket science - branding  +"
+puts "\n " + ("=" * headline.length)
+puts  headline
+puts " " + ("=" * headline.length) + "\n"
+
 # create assets
-config.definitions.each do |definition|
+config.assets.each do |set_name, definition|
+
+  print "\n PROCESSING "
+  puts  "#{set_name}\n".yellow
 
   image = ImageSorcery.new(File.join(config.defaults.template_folder, definition.template))
 
-  definition.formats.each do |label, settings|
-    logo_file_name = "#{definition.logo_name}_#{label}.#{settings.format}"
+  definition.versions.each do |label, settings|
+    logo_file_name = "#{definition.logo_name}_#{label}.#{config.defaults.format}"
     logo_full_path = File.join(Dir.pwd, config.defaults.output_folder, logo_file_name)
-    image.convert(logo_full_path, format: settings.format, resize: settings.size, depth: config.defaults.depth, colors: config.defaults.colors)
-    puts "Created #{logo_file_name}".green
-    created_files << logo_full_path
+
+    convert_settings = {
+      define: "png:include-chunk=none,trns,gama",
+      format: "png",
+      resize: settings.size,
+      depth: config.defaults.depth,
+      colors: config.defaults.colors,
+      dither: 'None',
+      strip: true,
+      background: config.defaults.background
+    }
+    image.convert(logo_full_path, convert_settings)
+
+    print " CREATED    ".green
+    puts logo_file_name #.white
+
+    # reduce file size
+    squeezer.squeeze!(logo_full_path)
+
+    print " SQUEEZED   ".green
+    puts logo_file_name
+    puts "\n"
   end
-end
-
-# reduce file size
-squeezer = ImageSqueeze.new(processors: [ ImageSqueeze::PNGCrushSilentProcessor ])
-
-created_files.each do |file|
-  squeezer.squeeze!(file)
-  puts "Squeezed #{file}".green
 end
 
 # open result folder
 if config.defaults.open_when_done
-  puts "Opening result folder".green
+  puts "\nOPENING result folder"
   system "open #{full_output_path}"
 end
 
