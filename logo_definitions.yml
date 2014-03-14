@@ -26,3 +26,5 @@ assets:
         size: 200x200
       gravatar:
         size: 220x220
+      twitter:
+        size: 200x200
