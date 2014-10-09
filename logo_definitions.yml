@@ -13,8 +13,12 @@ assets:
     logo_name: trsc_logo_full
 
     versions:
+      website:
+        size: 300x300
       gravatar:
         size: 220x220
+      kitty:
+        size: 140x170
   logo:
     template: TRS_Logo_RGB_solo.svg
     logo_name: trsc_logo
@@ -23,8 +27,10 @@ assets:
       fb:
         size: 300x300
       website:
-        size: 200x200
+        size: 300x300
       gravatar:
         size: 220x220
       twitter:
-        size: 200x200
+        size: 250x250
+      kitty:
+        size: 140x170
